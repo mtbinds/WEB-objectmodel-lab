@@ -8,7 +8,7 @@
 
 |Nom|Prénom|login|email|
 |--|--|--|--|
-| ... | ... | ... | ... |
+| Madjid | Taoualit | tm177375 | madjid.taoualit@etu.univ-lehavre.fr |
 
 See <https://pigne.org/teaching/webdev1/lab/ObjectModelLab> for instructions.
 
