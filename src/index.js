@@ -22,3 +22,7 @@ export const Enumeration = function (keys) {
   Object.freeze(enumeration);
   return enumeration;
 };
+
+/* Adding enumeration variable */
+
+var myEnum = new Enumeration(['TEMPERATURE', 'HUMIDITY', 'LIGHT', 'SWITCH', 'DOOR', 'FAN_SPEED']);
