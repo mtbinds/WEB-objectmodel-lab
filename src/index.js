@@ -114,3 +114,18 @@ export class Light extends Sensor {
     return true;
   }
 }
+
+/* Adding class Switch extending class Sensor with it's constructor & boolean function estEnNorme() */
+
+export class Switch extends Sensor {
+
+  // 0 pour éteint, 1 pour allumé.
+  constructor(id, name, data) {
+    super(id,name,data);
+  }
+
+  estEnNorme() {
+    if(!(this.data.value == 0 || this.data.value == 1 || typeof this.data.value == undefined)) { return false; }
+    return true;
+  }
+}
