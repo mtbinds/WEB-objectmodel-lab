@@ -143,3 +143,20 @@ export class Door extends Sensor {
     return true;
   }
 }
+
+/* Adding export class Fan_Speed extending class Sensor with it's constructor & boolean function estEnNorme() */
+
+export class Fan_Speed extends Sensor {
+
+  // Exprimé en t/s, ne peut pas être négatif.
+  constructor(id, name, data) {
+    super(id,name,data);
+  }
+
+  estEnNorme() {
+    if(this.data.values && this.data.labels) {
+      for(let val of this.data.values) { if(val >= 0) { return true; } }
+    }
+    return false;
+  }
+}
