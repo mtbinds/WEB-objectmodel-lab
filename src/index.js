@@ -219,6 +219,7 @@ export class TimeSeries extends Data {
 
 export class Datum extends Data {
 
+  //constructor
   constructor(value) {
     super();
     this._value = value;
