@@ -166,3 +166,53 @@ export class Fan_Speed extends Sensor {
 export class Data {
 
 }
+
+/* Adding export class Timeseries  extending empty class Data with it's constructor/getters/setters/ & other functions/methods
+
+-> stringToDate()
+-> nombreDeValeurs()
+-> valeurMoyenne()
+-> derniereMesure()
+
+ */
+
+export class TimeSeries extends Data {
+
+  constructor(values, labels) {
+    super();
+    this.values = values;
+    this.labels = labels;
+  }
+
+  get values() { return this._values || 0; }
+  set values(val) { this._values = val; }
+  get labels() { return this._labels || 0; }
+  set labels(val) { this._labels = val; }
+
+  stringToDate() {
+    let dates = [];
+    for(let i = 0; i < this.nombreDeValeurs(); i++) {
+      dates[i] = new Date(this.labels[i]);
+    }
+    return dates;
+  }
+
+  nombreDeValeurs() { return this.values.length; }
+
+  valeurMoyenne() {
+    let somme = 0;
+    for(let i = 0; i < this.nombreDeValeurs(); i++) { somme += this.values[i]; }
+    return somme / this.nombreDeValeurs();
+  }
+
+  derniereMesure() {
+    let dates = this.stringToDate();
+    let lastDate = dates[0];
+    for(let i = 0; i < this.nombreDeValeurs(); i++) {
+      if(dates[i] > lastDate) { lastDate = dates[i]; }
+    }
+    return lastDate;
+  }
+}
+
+
