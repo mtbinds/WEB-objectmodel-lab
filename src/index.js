@@ -96,7 +96,7 @@ export class Humidity extends Sensor {
   }
 }
 
-/* Adding class Light extending class Sensor with it's constructor & boolean function estEnNorme() */
+/* Adding export class Light extending class Sensor with it's constructor & boolean function estEnNorme() */
 
 export class Light extends Sensor {
 
@@ -115,11 +115,25 @@ export class Light extends Sensor {
   }
 }
 
-/* Adding class Switch extending class Sensor with it's constructor & boolean function estEnNorme() */
+/* Adding export class Switch extending class Sensor with it's constructor & boolean function estEnNorme() */
 
 export class Switch extends Sensor {
 
   // 0 pour éteint, 1 pour allumé.
+  constructor(id, name, data) {
+    super(id,name,data);
+  }
+
+  estEnNorme() {
+    if(!(this.data.value == 0 || this.data.value == 1 || typeof this.data.value == undefined)) { return false; }
+    return true;
+  }
+}
+
+/* Adding export class Door extending class Sensor with it's constructor & boolean function estEnNorme() */
+
+export class Door extends Sensor {
+  // 0 pour fermé, 1 pour ouvert.
   constructor(id, name, data) {
     super(id,name,data);
   }
