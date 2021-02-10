@@ -160,3 +160,9 @@ export class Fan_Speed extends Sensor {
     return false;
   }
 }
+
+/* Adding empty class Data  */
+
+export class Data {
+
+}
