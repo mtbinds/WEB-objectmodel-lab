@@ -57,3 +57,23 @@ export class Sensor {
 		}
 	}
 }
+
+/* Adding export class Temperature extending class Sensor with it's constructor and estEnNorme() function */
+
+export class Temperature extends Sensor {
+
+  // La température est exprimée en degrés et ne peut pas aller en dessous du zéro absolu.
+
+  constructor(id, name, data) {
+    super(id,name,data);
+  }
+
+  estEnNorme() {
+    if(this.data.values && this.data.labels) {
+      for(let val of this.data.values) {
+        if(!(val >= -173)) { return false; }
+      }
+    }
+    return true;
+  }
+}
