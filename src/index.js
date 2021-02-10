@@ -215,4 +215,15 @@ export class TimeSeries extends Data {
   }
 }
 
+/* Adding export class Datum extending empty class Data with it's constructor & getter/setter */
 
+export class Datum extends Data {
+
+  constructor(value) {
+    super();
+    this._value = value;
+  }
+
+  get value() { return this._value || 0; }
+  set value(val) { this._value = val; }
+}
