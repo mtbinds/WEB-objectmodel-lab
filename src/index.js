@@ -95,3 +95,22 @@ export class Humidity extends Sensor {
     return true;
   }
 }
+
+/* Adding class Light extending class Sensor with it's constructor & boolean function estEnNorme() */
+
+export class Light extends Sensor {
+
+  // La lumière ici s'exprime en lux, unité ne pouvant pas être négative.
+  constructor(id, name, data) {
+    super(id,name,data);
+  }
+
+  estEnNorme() {
+    if(this.data.values && this.data.labels) {
+      for(let val of this.data.values) {
+        if(!(val >= 0)) { return false; }
+      }
+    }
+    return true;
+  }
+}
