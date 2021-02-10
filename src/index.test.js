@@ -20,6 +20,7 @@ describe('Sensor model tests', () => {
   });
 
   /* TESTS UNITAIRES */
+
   describe('Récupérer les données de data', () => {
     // Le plus de cas non conformes de sensors sont testés en insérant les données dans le tableau.
     // Voir sensors_data.js pour voir les différents cas étudiés
