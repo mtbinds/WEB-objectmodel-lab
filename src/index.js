@@ -77,3 +77,21 @@ export class Temperature extends Sensor {
     return true;
   }
 }
+
+/* Adding export class Humidity extending class Sensor with it's constructor & boolean function estEnNorme() */
+
+export class Humidity extends Sensor {
+  // L'humidité est exprimé en %.
+  constructor(id, name, data) {
+    super(id,name,data);
+  }
+
+  estEnNorme() {
+    if(this.data.values && this.data.labels) {
+      for(let val of this.data.values) {
+        if(!(val >= 0 && val <= 100)) { return false; }
+      }
+    }
+    return true;
+  }
+}
