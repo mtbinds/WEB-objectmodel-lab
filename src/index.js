@@ -4,227 +4,199 @@
  */
 /* Coded using  ECMASript 6 (class) Pattern */
 
-
 export const version = () => '1.0.0';
 
-/* Creating export constant function Enumeration */
-
-export const Enumeration = function (keys) {
-  const enumeration = Object.create(null);
-  for (const key of keys) {
-    enumeration[key] = key;
-  }
-  enumeration[Symbol.iterator] = function* () {
-    for (const key of keys) {
-      yield enumeration[key];
-    }
-  };
-  Object.freeze(enumeration);
-  return enumeration;
+//The Sensor Types
+export const sensorType = {
+  'TEMPERATURE': 'TEMPERATURE',
+  'HUMIDITY': 'HUMIDITY',
+  'LIGHT': 'LIGHT',
+  'SWITCH': 'SWITCH',
+  'DOOR': 'DOOR',
+  'FAN_SPEED': 'FAN_SPEED',
 };
 
-/* Adding enumeration variable */
-
-var myEnum = new Enumeration(['TEMPERATURE', 'HUMIDITY', 'LIGHT', 'SWITCH', 'DOOR', 'FAN_SPEED']);
-
-/* Adding export class Sensor with it's constructor/getters/setters & createSensor() method  */
-
+//Class Sensor
 export class Sensor {
+  #id;
+  #name;
+  #data;
 
-	constructor(id, name, data) {
-		this.id = id;
-		this.name = name;
-		if(data.values && data.labels) { this.data = new TimeSeries(data.values, data.labels); }
-		else if((data.value || data.value == 0) && typeof data.value != undefined) { this.data = new Datum(data.value); }
-		else { this.data = new Data(); }
-	}
+  constructor(id, name, data) {
 
-	get id() { return this._id || 0; }
-	set id(val) { this._id = val; }
-	get name() { return this._name || 0; }
-	set name(val) { this._name = val; }
-	get data() { return this._data || 0; }
-	set data(val) { this._data = val; }
+    if (id === 0){
+      throw new Error("id can't be equal to 0");
+    }
 
-	static createSensor(id, name, data, type) {
-		switch(type) {
-			case myEnum.TEMPERATURE: return new Temperature(id, name, data);
-			case myEnum.HUMIDITY: return new Humidity(id, name, data);
-			case myEnum.LIGHT: return new Light(id, name, data);
-			case myEnum.SWITCH: return new Switch(id, name, data);
-			case myEnum.DOOR: return new Door(id, name, data);
-			case myEnum.FAN_SPEED: return new Fan_Speed(id, name, data);
-		}
-	}
+    if (!id){
+      throw new Error("No id mentionned");
+    }
+
+    if (typeof id !== 'number'){
+      throw new TypeError("id must be a number");
+    }
+
+    if (!name){
+      throw new Error("No name mentionned");
+    }
+
+    this.#id = id;
+    this.#name = name;
+    this.#data = data;
+  }
+
+  get id() {
+    return this.#id;
+  }
+
+  get name() {
+    return this.#name;
+  }
+
+  get data() {
+    return this.#data;
+  }
 }
 
-/* Adding export class Temperature extending class Sensor with it's constructor and estEnNorme() function */
-
+//Class Temperature
 export class Temperature extends Sensor {
-
-  // La température est exprimée en degrés et ne peut pas aller en dessous du zéro absolu.
-
   constructor(id, name, data) {
-    super(id,name,data);
-  }
-
-  estEnNorme() {
-    if(this.data.values && this.data.labels) {
-      for(let val of this.data.values) {
-        if(!(val >= -173)) { return false; }
-      }
-    }
-    return true;
+    super(id, name, data);
   }
 }
 
-/* Adding export class Humidity extending class Sensor with it's constructor & boolean function estEnNorme() */
-
+//Class Humidity
 export class Humidity extends Sensor {
-  // L'humidité est exprimé en %.
   constructor(id, name, data) {
-    super(id,name,data);
-  }
-
-  estEnNorme() {
-    if(this.data.values && this.data.labels) {
-      for(let val of this.data.values) {
-        if(!(val >= 0 && val <= 100)) { return false; }
-      }
-    }
-    return true;
+    super(id, name, data);
   }
 }
 
-/* Adding export class Light extending class Sensor with it's constructor & boolean function estEnNorme() */
-
+//Class Light
 export class Light extends Sensor {
-
-  // La lumière ici s'exprime en lux, unité ne pouvant pas être négative.
   constructor(id, name, data) {
-    super(id,name,data);
-  }
-
-  estEnNorme() {
-    if(this.data.values && this.data.labels) {
-      for(let val of this.data.values) {
-        if(!(val >= 0)) { return false; }
-      }
-    }
-    return true;
+    super(id, name, data);
   }
 }
 
-/* Adding export class Switch extending class Sensor with it's constructor & boolean function estEnNorme() */
-
+//Class Switch
 export class Switch extends Sensor {
-
-  // 0 pour éteint, 1 pour allumé.
   constructor(id, name, data) {
-    super(id,name,data);
-  }
-
-  estEnNorme() {
-    if(!(this.data.value == 0 || this.data.value == 1 || typeof this.data.value == undefined)) { return false; }
-    return true;
+    super(id, name, data);
   }
 }
 
-/* Adding export class Door extending class Sensor with it's constructor & boolean function estEnNorme() */
-
+//Class Door
 export class Door extends Sensor {
-  // 0 pour fermé, 1 pour ouvert.
   constructor(id, name, data) {
-    super(id,name,data);
-  }
-
-  estEnNorme() {
-    if(!(this.data.value == 0 || this.data.value == 1 || typeof this.data.value == undefined)) { return false; }
-    return true;
+    super(id, name, data);
   }
 }
 
-/* Adding export class Fan_Speed extending class Sensor with it's constructor & boolean function estEnNorme() */
-
-export class Fan_Speed extends Sensor {
-
-  // Exprimé en t/s, ne peut pas être négatif.
+//Class FanSpeed
+export class FanSpeed extends Sensor {
   constructor(id, name, data) {
-    super(id,name,data);
-  }
-
-  estEnNorme() {
-    if(this.data.values && this.data.labels) {
-      for(let val of this.data.values) { if(val >= 0) { return true; } }
-    }
-    return false;
+    super(id, name, data);
   }
 }
 
-/* Adding empty class Data  */
-
+//Class Data
 export class Data {
-
+  constructor() {}
 }
 
-/* Adding export class Timeseries  extending empty class Data with it's constructor/getters/setters/ & other functions/methods
-
--> stringToDate()
--> nombreDeValeurs()
--> valeurMoyenne()
--> derniereMesure()
-
- */
-
+//Class TimeSeries
 export class TimeSeries extends Data {
+  #values;
+  #labels;
 
   constructor(values, labels) {
     super();
-    this.values = values;
-    this.labels = labels;
+    this.#values = values;
+    this.#labels = labels;
   }
 
-  get values() { return this._values || 0; }
-  set values(val) { this._values = val; }
-  get labels() { return this._labels || 0; }
-  set labels(val) { this._labels = val; }
+  get values() {
+    return this.#values;
+  }
 
-  stringToDate() {
-    let dates = [];
-    for(let i = 0; i < this.nombreDeValeurs(); i++) {
-      dates[i] = new Date(this.labels[i]);
+  get labels() {
+    return this.#labels;
+  }
+
+  numberOfValues() {
+    return this.#values.length;
+  }
+
+  averageValue() {
+    let sum = 0;
+    for (let i = 0; i < this.numberOfValues(); i++) {
+      sum += this.#values[i];
     }
-    return dates;
+    return sum / this.numberOfValues();
   }
 
-  nombreDeValeurs() { return this.values.length; }
-
-  valeurMoyenne() {
-    let somme = 0;
-    for(let i = 0; i < this.nombreDeValeurs(); i++) { somme += this.values[i]; }
-    return somme / this.nombreDeValeurs();
-  }
-
-  derniereMesure() {
-    let dates = this.stringToDate();
-    let lastDate = dates[0];
-    for(let i = 0; i < this.nombreDeValeurs(); i++) {
-      if(dates[i] > lastDate) { lastDate = dates[i]; }
+  dateOfLastMeasure() {
+    let lastDate = this.#labels[0];
+    for (let i = 0; i < this.#labels.length; i++) {
+      if (this.#labels[i] > lastDate) {
+        lastDate = this.#labels[i];
+      }
     }
     return lastDate;
   }
 }
 
-/* Adding export class Datum extending empty class Data with it's constructor & getter/setter */
-
+//Class Datum
 export class Datum extends Data {
+  #value;
 
-  //constructor
-  constructor(value) {
+  constructor(value){
     super();
-    this._value = value;
+    this.#value = value;
   }
 
-  get value() { return this._value || 0; }
-  set value(val) { this._value = val; }
+  get value() {
+    return this.#value;
+  }
+}
+
+//Function createSensor
+export function createSensor(dataObject) {
+  let data = null;
+  let sensor;
+
+  if (dataObject.data.value !== undefined) {
+    data = new Datum(dataObject.data.value);
+  }
+
+  if (dataObject.data.values && dataObject.data.labels) {
+    if (!Array.isArray(dataObject.data.values) || !Array.isArray(dataObject.data.labels)) {
+      throw new Error("Values or labels Array doesn't exist");
+    }
+    if (dataObject.data.values.length !== dataObject.data.labels.length) {
+      throw new RangeError('Values and labels must have the same length');
+    }
+    data = new TimeSeries(dataObject.data.values, dataObject.data.labels);
+  }
+
+  switch (dataObject.type) {
+    case sensorType.TEMPERATURE: sensor = new Temperature(dataObject.id, dataObject.name, data); break;
+    case sensorType.HUMIDITY: sensor = new Humidity(dataObject.id, dataObject.name, data); break;
+    case sensorType.LIGHT: sensor = new Light(dataObject.id, dataObject.name, data); break;
+    case sensorType.SWITCH: sensor = new Switch(dataObject.id, dataObject.name, data); break;
+    case sensorType.DOOR: sensor = new Door(dataObject.id, dataObject.name, data); break;
+    case sensorType.FAN_SPEED: sensor = new FanSpeed(dataObject.id, dataObject.name, data); break;
+    default: throw new Error("type of Sensor is not defined");
+  }
+  return sensor;
+}
+
+//Function createSensors
+export function createSensors(dataObject) {
+  let sensors = [];
+  for (const object of dataObject) {
+    sensors.push(createSensor(object));
+  }
+  return sensors;
 }
